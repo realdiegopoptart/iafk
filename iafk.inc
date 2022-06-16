@@ -49,7 +49,7 @@ public OnPlayerDisconnect(playerid, reason)
         {
                 GetPlayerName(playerid, playerAName,sizeof(playerAName)),
                 PlayerAFK[playerid] = false;
-                printf("[resume] %s is no longer AFK because he's left the game. (%d seconds)",playerAName,gettime()-AFKTime[playerid]);
+                // printf("[resume] %s is no longer AFK because he's left the game. (%d seconds)",playerAName,gettime()-AFKTime[playerid]);
                 FunctionCall[1][playerid] = true;
                 FunctionCall[0][playerid] = false;
                 AFKTime[playerid] = 0;
