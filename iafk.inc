@@ -2,6 +2,9 @@
   Improved afk.inc by realdiegopoptart
   fixes bugs that I discovered with the include
   Orignal Credits to Miihai
+
+  CHANGES FOR OPEN.RP:
+  - made it work for YSI foreach
 */
  
 new bool:PlayerAFK[MAX_PLAYERS]; // Sets player variable [0-NOT-AFK | 1-AFK]
@@ -9,9 +12,6 @@ new AFKDetect[MAX_PLAYERS]; // Sets current date/time to player from OnPlayerUpd
 new bool: FunctionCall[2][MAX_PLAYERS]; // Helps to not repeat OnPlayerPause or/and OnPlayerUnpause
 new playerAName[50]; //Player name
 new AFKTime[MAX_PLAYERS];
- 
-#include <a_samp>
-#include <YSI_Data/y_iterate>
  
 #if defined _AFKDETECT_INC
         #endinput
@@ -71,15 +71,15 @@ public OnPlayerDisconnect(playerid, reason)
 #endif
 #define OnPlayerDisconnect VFUNC_OnPlayerDisconnect
  
-public OnGameModeInit() {
-        SetTimer("AFKChecker",1000,true);
+public OnGameModeInit()
+{
+        SetTimer("AFKChecker",1000, true);
     #if defined VFUNC_OnGameModeInit
         return VFUNC_OnGameModeInit();
     #else
         return 1;
     #endif
 }
-
 #if defined VFUNC_OnGameModeInit
     forward VFUNC_OnGameModeInit();
 #endif
@@ -89,11 +89,13 @@ public OnGameModeInit() {
     #define _ALS_OnGameModeInit
 #endif
 #define OnGameModeInit VFUNC_OnGameModeInit
-
-public AFKChecker() {
-    foreach(new i : Player) {
-        if(gettime()-AFKDetect[i] > 5) {
-            if(PlayerAFK[i] == false && FunctionCall[0][i] == false) {
+public AFKChecker()
+{
+    foreach(new i : Player)
+    {
+        if(gettime()-AFKDetect[i] > 5)
+        {
+            if(PlayerAFK[i] == false && FunctionCall[0][i] == false)
                 GetPlayerName(i, playerAName,sizeof(playerAName)),
                 PlayerAFK[i] = true,
                 CallLocalFunction("OnPlayerPause", "i", i),
@@ -101,29 +103,34 @@ public AFKChecker() {
                 FunctionCall[0][i] = true,
                 FunctionCall[1][i] = false,
                 AFKTime[i] = gettime();
-            }
-        }
 
-        else {
-            if(PlayerAFK[i] == true && FunctionCall[1][i] == false) {
-                GetPlayerName(i, playerAName,sizeof(playerAName)),
-                PlayerAFK[i] = false,
-                CallLocalFunction("OnPlayerUnpause", "i", i),
-                //printf("[resume] %s is no longer AFK. (%d seconds)",playerAName,gettime()-AFKTime[i]),
-                FunctionCall[1][i] = true,
-                FunctionCall[0][i] = false,
-                AFKTime[i] = gettime()-AFKTime[i];
-            }
+                // check of AFK_NAMETAG is defined
+                #if defined AFK_NAMETAG
+                    new nametag[80];
+					format(nametag, sizeof(nametag), "Paused for %s seconds", gettime()-AFKTime[i]);
+					SetPlayerChatBubble(i, nametag, 0xFF0000FF, 40.0, 2000);
+                #endif
+        }
+        else
+        {
+        if(PlayerAFK[i] == true && FunctionCall[1][i] == false)
+            GetPlayerName(i, playerAName,sizeof(playerAName)),
+            PlayerAFK[i] = false,
+            CallLocalFunction("OnPlayerUnpause", "i", i),
+            //printf("[resume] %s is no longer AFK. (%d seconds)",playerAName,gettime()-AFKTime[i]),
+            FunctionCall[1][i] = true,
+            FunctionCall[0][i] = false,
+            AFKTime[i] = gettime()-AFKTime[i];
         }
     }
     return 1;
 }
 
 public IsPlayerPause(playerid)
-    if(PlayerAFK[playerid] == true) return 1;
-    else return 0;
+        if(PlayerAFK[playerid] == true) return 1;
+                else return 0;
  
 public TimeSincePaused(playerid) {
-    if(PlayerAFK[playerid] == true) return gettime()-AFKTime[playerid];
-    else return AFKTime[playerid];
+        if(PlayerAFK[playerid] == true) return gettime()-AFKTime[playerid];
+        else return AFKTime[playerid];
 }
