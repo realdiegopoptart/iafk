@@ -107,7 +107,7 @@ public AFKChecker()
                 // check of AFK_NAMETAG is defined
                 #if defined AFK_NAMETAG
                     new nametag[80];
-					format(nametag, sizeof(nametag), "Paused for %s seconds", gettime()-AFKTime[i]);
+					format(nametag, sizeof(nametag), "Paused for %d seconds", gettime()-AFKTime[i]);
 					SetPlayerChatBubble(i, nametag, 0xFF0000FF, 40.0, 2000);
                 #endif
         }
