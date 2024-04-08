@@ -10,7 +10,7 @@
 new bool:PlayerAFK[MAX_PLAYERS]; // Sets player variable [0-NOT-AFK | 1-AFK]
 new AFKDetect[MAX_PLAYERS]; // Sets current date/time to player from OnPlayerUpdate(OPU)
 new bool: FunctionCall[2][MAX_PLAYERS]; // Helps to not repeat OnPlayerPause or/and OnPlayerUnpause
-new playerAName[50]; //Player name
+new playerAName[MAX_PLAYER_NAME]; //Player name
 new AFKTime[MAX_PLAYERS];
  
 #if defined _AFKDETECT_INC
