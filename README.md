@@ -2,7 +2,9 @@ Library Documentation: Improved AFK Detection for SAMP
 
 Description:
 
-This library provides functionality for detecting AFK (Away From Keyboard) players in San Andreas Multiplayer (SA:MP). It tracks player activity and pauses/unpauses them accordingly based on inactivity.
+This library provides functionality for detecting AFK (Away From Keyboard) players in SA:MP/open.mp. It tracks player activity and pauses/unpauses them accordingly based on inactivity.
+Use `define AFK_NAMETAG` to add a player paused message above the players head while they are paused.
+
 Usage:
 
     Include the library in your Pawn script.
